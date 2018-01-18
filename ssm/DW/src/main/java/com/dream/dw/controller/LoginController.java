@@ -66,5 +66,18 @@ public class LoginController {
             return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
         }
     }
+//
+//    @RequestMapping(value = "test")
+//    public ResponseEntity test(@RequestBody User user) {
+//        String result = loginService.test(user);
+//        return new ResponseEntity(result, HttpStatus.OK);
+//    }
+//
+//    @GetMapping(value = "iscache")
+//    public ResponseEntity isCache(@RequestParam String key) {
+//        Boolean result = loginService.isCached(key);
+//        return new ResponseEntity(result, HttpStatus.OK);
+//
+//    }
 
 }

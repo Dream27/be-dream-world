@@ -13,9 +13,15 @@ public interface LoginService {
 
     boolean loginByEmail(User user);
 
+    User checkUserExist(User user);
+
     int registerUser(User user);
 
-    boolean sendActiveEmail(User user);
+    String sendActiveEmail(User user);
 
     boolean activeUser(String code);
+//
+//    String test(User user);
+//
+//    boolean isCached(String key);
 }
