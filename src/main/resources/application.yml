@@ -1,0 +1,54 @@
+# Spring profiles
+spring:
+  # Data source
+  datasource:
+    name: demo1
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/dw?serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    minIdle: 5
+    maxActive: 10
+    initialSize: 5
+    timeBetweenEvictionRunsMillis: 3000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 'ZTM' FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    filters: stat
+
+# Mybatis
+mybatis:
+  typeAliasesPackage: com.dream.dw.dao
+  mapperLocations: classpath*:mapping/*Mapper.xml
+
+#fastdfs
+fdfs:
+  so-timeout: 1500
+  connect-timeout: 600
+  tracker-list: 192.168.192.129:22122
+
+#redis:
+redis:
+  # Redis数据库索引（默认为0）
+  database: 0
+  # Redis服务器地址
+  host: 192.168.192.129
+  # Redis服务器连接端口
+  port: 6379
+  # Redis服务器连接密码（默认为空）
+  password: redis
+  # 连接池最大连接数（使用负值表示没有限制）
+  pool.max-active: 8
+  # 连接池最大阻塞等待时间（使用负值表示没有限制）
+  pool.max-wait: -1
+  # 连接池中的最大空闲连接
+  pool.max-idle: 8
+  # 连接池中的最小空闲连接
+  pool.min-idle: 0
+  # 连接超时时间（毫秒）
+  timeout: 0
+
+
