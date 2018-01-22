@@ -18,7 +18,7 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @RequestMapping(value = "loginbyname", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "loginByName", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity loginByName(@RequestBody User user) {
         if (user.getName() == null || user.getPassword() == null) {
             return new ResponseEntity(0, HttpStatus.BAD_REQUEST);
@@ -31,7 +31,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value = "loginbyemail")
+    @RequestMapping(value = "loginByEmail")
     public ResponseEntity loginByEmail(@RequestBody User user) {
         if (user.getEmail() == null || user.getPassword() == null) {
             return new ResponseEntity(0, HttpStatus.BAD_REQUEST);

@@ -1,0 +1,12 @@
+/target/
+.classpath
+.project
+.settings
+.DS_Store
+.springBeans
+logs
+pom.xml.rej
+bin/
+*.iml
+.idea/
+/.apt_generated/

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dream</groupId>
-    <artifactId>DW</artifactId>
+    <artifactId>be-dream-world</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <parent>
@@ -124,13 +124,13 @@
     </dependencies>
 
     <build>
-        <finalName>demo1</finalName>
+        <finalName>be-dream-world</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.dream.demo1.Main</mainClass>
+                    <mainClass>com.dream.dw.Main</mainClass>
                 </configuration>
             </plugin>
             <plugin>
