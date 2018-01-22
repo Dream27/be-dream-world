@@ -20,8 +20,4 @@ public interface LoginService {
     String sendActiveEmail(User user);
 
     boolean activeUser(String code);
-//
-//    String test(User user);
-//
-//    boolean isCached(String key);
 }

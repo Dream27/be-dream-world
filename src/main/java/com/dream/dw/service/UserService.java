@@ -8,7 +8,6 @@ import java.util.List;
  * Created by Dream on 2017/12/29.
  */
 public interface UserService {
-    List<User> getAllUsers();
 
     User getUserById(Long userId);
 

@@ -11,10 +11,7 @@ import java.util.List;
  * Created by Dream on 2018/1/14.
  */
 public interface TravelNoteService {
-    List<TravelNote> getAllTravelNote();
-    List<TravelNote> getTravelNoteByTitle(String title);
-    List<TravelNote> getTravelNoteByTime(Date time1, Date time2);
-    List<TravelNote> getTravelNoteByAuthorName(String author);
+    List<TravelNote> getTravelNoteByUserId(Long userId);
 
     boolean addTravelNote(TravelNote travelNote);
     boolean deleteTravelNote(long noteId);   //1.删除游记  2.若用户点赞、收藏表里有该游记，一并删除  (未做删除图片)

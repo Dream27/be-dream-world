@@ -31,7 +31,6 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean loginByName(User user) {
-        //System.out.println("==================================");
         UserExample userExample = new UserExample();
         userExample.createCriteria().andNameEqualTo(user.getName()).andPasswordEqualTo(user.getPassword());
         List<User> users = userMapper.selectByExample(userExample);
@@ -135,19 +134,4 @@ public class LoginServiceImpl implements LoginService {
         }
         return true;
     }
-
-//    @Override
-//    //@CachePut(value = "test", key="#user.userId + ''")
-//    @Cacheable(value = "test", key="#user.userId + ''")
-//    public String test(User user) {
-//        System.out.println("================");
-//        String code= UUID.randomUUID().toString().replace("-", "");
-//        return code;
-//    }
-//
-//
-//    @Override
-//    public boolean isCached(String key) {
-//        return JedisClusterUtils.isCached(key);
-//    }
 }

@@ -27,13 +27,10 @@ public class TravelNoteController {
     @Autowired
     TravelNoteService travelNoteService;
 
-    public ResponseEntity getNotesByUserName(@RequestParam String name) {
-        List<TravelNote> travelNotes = travelNoteService.getTravelNoteByAuthorName(name);
-        return new ResponseEntity(travelNotes, HttpStatus.OK);
-    }
-
+    @GetMapping(value = "getNoteByUserId")
     public ResponseEntity getNotesByUserId(@RequestParam Long userId) {
-        return null;
+        List<TravelNote> travelNotes = travelNoteService.getTravelNoteByUserId(userId);
+        return new ResponseEntity(travelNotes, HttpStatus.OK);
     }
 
     /**
@@ -50,7 +47,7 @@ public class TravelNoteController {
         }
     }
 
-    @GetMapping(value = "deletenote")
+    @GetMapping(value = "deleteNote")
     //@CacheEvict(value = "note", key="'NOTE_' + #noteId")
     public ResponseEntity deleteNote(@RequestParam Long noteId) {
         boolean result = travelNoteService.deleteTravelNote(noteId);
@@ -61,7 +58,7 @@ public class TravelNoteController {
         }
     }
 
-    @RequestMapping(value = "updatenote") //注意需要travelnote状态字段，若修改后依然存在草稿箱状态为1，若点击发布状态为0；
+    @RequestMapping(value = "updateNote") //注意需要travelnote状态字段，若修改后依然存在草稿箱状态为1，若点击发布状态为0；
     //@CacheEvict(value = "note", key="'NOTE_' + #travelNote.noteId")
     public ResponseEntity updateNote(@RequestBody TravelNote travelNote) {
         boolean result = travelNoteService.updateTravelNote(travelNote);
@@ -83,7 +80,7 @@ public class TravelNoteController {
         }
     }
 
-    @GetMapping(value = "collect")
+    @GetMapping(value = "increaseCollectCount")
     //@CacheEvict(value = "note", key="'NOTE_' + #noteId")
     public ResponseEntity updateCollectCount(@RequestParam Long noteId, @RequestParam int operate, @RequestParam Long userId) {
         boolean result = travelNoteService.updateCollectCount(noteId, operate, 1,userId);
@@ -94,7 +91,7 @@ public class TravelNoteController {
         }
     }
 
-    @GetMapping(value = "like")
+    @GetMapping(value = "increaseLikeCount")
     //@CacheEvict(value = "note", key="'NOTE_' + #noteId")
     public ResponseEntity updateLikeCount(@RequestParam Long noteId, @RequestParam int operate, @RequestParam Long userId) {
         boolean result = travelNoteService.updateLikeCount(noteId, operate, 1,userId);
@@ -105,7 +102,7 @@ public class TravelNoteController {
         }
     }
 
-    @RequestMapping(value = "uploadimg")
+    @RequestMapping(value = "uploadImg")
     public ResponseEntity uploadImg(@RequestBody MultipartFile file) {
         String result = travelNoteService.uploadImg(file);
         if(result != null || !result.equals("")) {
@@ -116,7 +113,7 @@ public class TravelNoteController {
         }
     }
 
-    @GetMapping(value = "deleteimg")
+    @GetMapping(value = "deleteImg")
     public ResponseEntity deleteImg(@RequestParam String key) {
         boolean result = travelNoteService.deleteImg(key);
         if(result) {

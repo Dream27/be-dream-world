@@ -21,13 +21,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping(value = "alluser")
-    public ResponseEntity getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return new ResponseEntity(users, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "queryuser")
+    @GetMapping(value = "getUserByUserId")
     public ResponseEntity getUserById(@RequestParam Long uid) {
         User user = userService.getUserById(uid);
         if (user != null) {
@@ -40,7 +34,7 @@ public class UserController {
         return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value = "delete")
+    @GetMapping(value = "deleteUser")
     public ResponseEntity deleteUser(@RequestParam Long uid) {
         Boolean result = userService.deleteUser(uid);
         if (result) {
@@ -50,7 +44,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "updatepwd")
+    @GetMapping(value = "updatePwd")
     public ResponseEntity updatePwd(@RequestParam Long uid, @RequestParam String pwd) {
         Boolean result = userService.updatePwd(uid, pwd);
         if (result) {
@@ -60,7 +54,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "updatename")
+    @GetMapping(value = "updateName")
     public ResponseEntity updateName(@RequestParam Long uid, @RequestParam String name) {
         Boolean result = userService.updateName(uid, name);
         if (result) {
@@ -70,7 +64,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "updateemail")
+    @GetMapping(value = "updateEmail")
     public ResponseEntity updateEmail(@RequestParam Long uid, @RequestParam String email) {
         Boolean result = userService.updateEmail(uid, email);
         if (result) {

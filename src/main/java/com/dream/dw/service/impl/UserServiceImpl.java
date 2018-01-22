@@ -25,13 +25,6 @@ public class UserServiceImpl implements UserService {
     private LoginService loginService;
 
     @Override
-    public List<User> getAllUsers() {
-        UserExample userExample = new UserExample();
-        userExample.createCriteria();
-        return userMapper.selectByExample(userExample);
-    }
-
-    @Override
     @Cacheable(value = "user", key="'UID_' + #userId")
     public User getUserById(Long userId) {
         UserExample userExample = new UserExample();

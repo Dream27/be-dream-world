@@ -41,38 +41,9 @@ public class TravelNoteServiceImpl implements TravelNoteService {
     FastFileStorageClient fastFileStorageClient;
 
     @Override
-    public List<TravelNote> getAllTravelNote() {
+    public List<TravelNote> getTravelNoteByUserId(Long userId) {
         TravelNoteExample travelNoteExample = new TravelNoteExample();
-        travelNoteExample.createCriteria();
-        return travelNoteMapper.selectByExample(travelNoteExample);
-    }
-
-    @Override
-    public List<TravelNote> getTravelNoteByTitle(String title) {
-        TravelNoteExample travelNoteExample = new TravelNoteExample();
-        travelNoteExample.createCriteria().andTitleEqualTo(title);
-        return travelNoteMapper.selectByExample(travelNoteExample);
-    }
-
-    @Override
-    public List<TravelNote> getTravelNoteByTime(Date time1, Date time2) {
-        TravelNoteExample travelNoteExample = new TravelNoteExample();
-        travelNoteExample.createCriteria().andTimeBetween(time1, time2);
-        //travelNoteExample.createCriteria();
-        //List<TravelNote> tmp = travelNoteMapper.selectByExample(travelNoteExample);
-        return travelNoteMapper.selectByExample(travelNoteExample);
-    }
-
-    @Override
-    public List<TravelNote> getTravelNoteByAuthorName(String author) {
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andNameEqualTo(author);
-        List<User> users = userMapper.selectByExample(userExample);
-        if(users.isEmpty()) {
-            return null;
-        }
-        TravelNoteExample travelNoteExample = new TravelNoteExample();
-        travelNoteExample.createCriteria().andUserIdEqualTo(users.get(0).getUserId());
+        travelNoteExample.createCriteria().andUserIdEqualTo(userId);
         return travelNoteMapper.selectByExample(travelNoteExample);
     }
 
