@@ -56,7 +56,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public User checkUserExist(User user) {
         UserExample userExample = new UserExample();
-        //用户邮箱不可重复
+        //user email must be unique
         userExample.createCriteria().andEmailEqualTo(user.getEmail()).andPasswordEqualTo(user.getPassword());
         List<User> users = userMapper.selectByExample(userExample);
         if(users.isEmpty()) {
@@ -68,25 +68,25 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     /*
-    * 注册新用户并发送激活邮件
-    * 返回值为0：用户添加失败；-1：用户添加成功，邮件发送失败；1：用户添加成功，邮件发送成功； 2：已有该用户
+    * register new user and send active email
+    * return 0：add user error；-1：add user success，send email error；1：add user success，send email success； 2：the user has been exist
     * */
     public int registerUser(User user) {
-        //先查询若有该用户：状态激活，直接返回；状态未激活，则只发送邮件。若无该用户，创建用户发送邮件；
+        //query: If the user has been exist: if state has been active, return, else send active email. If the user has not been exist, add the user and send active email.
         int result1 = 0;
         User user1 = checkUserExist(user);
         if( user1 != null && user1.getStatus() == 0) {
             return 2;
         } else if ( user1 != null && user1.getStatus() == 1) {
-            result1 = (!sendActiveEmail(user1).equals("false") ? 1:-1); //发送激活邮件
+            result1 = (!sendActiveEmail(user1).equals("false") ? 1:-1); //send active email
         } else {
-            //插入新用户
+            //add new user
             IdWorker idWorker = new IdWorker();
             user.setUserId(idWorker.nextId());
             int result = userMapper.insertSelective(user);
 
             if (result != 0) {
-                result1 = (!sendActiveEmail(user).equals("false") ? 1:-1); //发送激活邮件
+                result1 = (!sendActiveEmail(user).equals("false") ? 1:-1); //send active email
             }
         }
         return result1;
@@ -103,14 +103,14 @@ public class LoginServiceImpl implements LoginService {
         Email email = Email.template("test_template_active")
                 .from("3373524374@qq.com.sendcloud.org")
                 .fromName("DreamWorld")
-                .substitutionVars(Substitution.sub()  // 模板变量替换
+                .substitutionVars(Substitution.sub()  // replace template variable
                         .set("url", "http://localhost:8080/login/active?code="+code)
                         .set("name", user.getName()))
                 .to(user.getEmail());
 
         Result result = webapi.mail().send(email);
         if (result.isSuccess()) {
-            //存储激活码到redis中
+            //save the active code to redis
             JedisClusterUtils.saveString(code, user.getUserId()+"");
         }
 
@@ -119,7 +119,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean activeUser(String code) {
-        //查询code对应的用户id，若有，将用户状态改为已激活，删除redis记录，返回true，否则返回false
+        //query user id corresponding the code, if exist, update user state to active and delete relevant redis record, return true, else return false.
         if(JedisClusterUtils.isCached(code))
         {
             Long userId = Long.parseLong(JedisClusterUtils.getString(code));

@@ -97,16 +97,16 @@ public class TravelNoteServiceImpl implements TravelNoteService {
     @Override
     @Transactional
     public boolean updateCollectCount(long noteId, int operate, int value, long userId) {
-        //1.增加/删除用户收藏记录
+        //1.add/delete user collect record
         int flag;
         int result1 = 1, result2 = 1, result3 = 1;
         CollectRecordExample collectRecordExample = new CollectRecordExample();
         collectRecordExample.createCriteria().andNoteIdEqualTo(noteId).andUserIdEqualTo(userId);
         List<CollectRecord> collectRecords = collectRecordMapper.selectByExample(collectRecordExample);
         if(operate == 1){
-            //增加
+            //add
             if(collectRecords.isEmpty()) {
-                //未收藏：增加
+                //have not been collect：add
                 CollectRecord collectRecord = new CollectRecord();
                 collectRecord.setUserId(userId);
                 collectRecord.setNoteId(noteId);
@@ -116,7 +116,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
                 flag = 0;
             } else {
                 if(collectRecords.get(0).getStatus() == 1) {
-                    //收藏过：更改
+                    //had been collect：update
                     CollectRecord collectRecord = new CollectRecord();
                     collectRecord.setStatus(0);
                     collectRecord.setCreateTime(new Date());    //时间是有问题的！！！！！！！！！！！！
@@ -124,13 +124,13 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
                     flag = 1;
                 } else {
-                    //已收藏，不能重复收藏
+                    //have been collect: return
                     flag = 2;
                 }
 
             }
         } else {
-            //删除 operate == 0
+            //delete(operate == 0)
             if(collectRecords.isEmpty() || collectRecords.get(0).getStatus() == 1) {
                 return false;
             } else {
@@ -144,7 +144,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
         if((flag != 2 && operate == 1) || (flag == 2 && operate == 0))
         {
-            //2.更新收藏量
+            //2.increase collect count
             TravelNoteExample travelNoteExample = new TravelNoteExample();
             travelNoteExample.createCriteria().andNoteIdEqualTo(noteId);
             List<TravelNote> travelNotes = travelNoteMapper.selectByExample(travelNoteExample);
@@ -162,7 +162,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
         }
 
         if(flag == 0) {
-            //3.为游记作者增加积分
+            //3.add travelnote' author credit
             UserExample userExample = new UserExample();
             userExample.createCriteria().andUserIdEqualTo(userId);
             List<User> users = userMapper.selectByExample(userExample);
@@ -179,16 +179,16 @@ public class TravelNoteServiceImpl implements TravelNoteService {
     @Override
     @Transactional
     public boolean updateLikeCount(long noteId, int operate, int value, long userId) {
-        //1.增加/删除用户点赞记录
+        //1.add/delete user like record
         int flag;
         int result1 = 1, result2 = 1, result3 = 1;
         LikeRecordExample likeRecordExample = new LikeRecordExample();
         likeRecordExample.createCriteria().andNoteIdEqualTo(noteId).andUserIdEqualTo(userId);
         List<LikeRecord> likeRecords = likeRecordMapper.selectByExample(likeRecordExample);
         if(operate == 1){
-            //增加
+            //add
             if(likeRecords.isEmpty()) {
-                //未点赞：增加
+                //have not been like：add
                 LikeRecord likeRecord = new LikeRecord();
                 likeRecord.setUserId(userId);
                 likeRecord.setNoteId(noteId);
@@ -198,7 +198,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
                 flag = 0;
             } else {
                 if(likeRecords.get(0).getStatus() == 1) {
-                    //点赞过：更改
+                    //had been collect：update
                     LikeRecord likeRecord = new LikeRecord();
                     likeRecord.setStatus(0);
                     likeRecord.setCreateTime(new Date());
@@ -206,13 +206,13 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
                     flag = 1;
                 } else {
-                    //已点赞，不能重复点赞
+                    //have been collect：return
                     flag = 2;
                 }
 
             }
         } else {
-            //删除 operate == 0
+            //delete(operate == 0)
             if(likeRecords.isEmpty() || likeRecords.get(0).getStatus() == 1) {
                 return false;
             } else {
@@ -226,7 +226,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
         if((flag != 2 && operate == 1) || (flag == 2 && operate == 0))
         {
-            //2.更新喜爱量
+            //2.increase like count
             TravelNoteExample travelNoteExample = new TravelNoteExample();
             travelNoteExample.createCriteria().andNoteIdEqualTo(noteId);
             List<TravelNote> travelNotes = travelNoteMapper.selectByExample(travelNoteExample);
@@ -244,7 +244,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
         }
 
         if(flag == 0) {
-            //3.为游记作者增加积分
+            //3.add travelnote' author credit
             UserExample userExample = new UserExample();
             userExample.createCriteria().andUserIdEqualTo(userId);
             List<User> users = userMapper.selectByExample(userExample);

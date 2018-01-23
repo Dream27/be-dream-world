@@ -34,7 +34,7 @@ public class TravelNoteController {
     }
 
     /**
-     * 注意需要travelnote状态字段，若存为草稿箱状态为1，若直接发布状态为0.
+     * Tips:travelnote 'status' field: if travelnote is draft, status is equal to 1, else travelnote is published, status is equal to 0.
      */
     @RequestMapping(value = "addNote")
     public ResponseEntity addNote(@RequestBody TravelNote travelNote) {
@@ -58,7 +58,10 @@ public class TravelNoteController {
         }
     }
 
-    @RequestMapping(value = "updateNote") //注意需要travelnote状态字段，若修改后依然存在草稿箱状态为1，若点击发布状态为0；
+    /**
+     * Tips:travelnote 'status' field: after update, if travelnote is still draft, status is equal to 1, else travelnote is published, status is equal to 0.
+     */
+    @RequestMapping(value = "updateNote")
     //@CacheEvict(value = "note", key="'NOTE_' + #travelNote.noteId")
     public ResponseEntity updateNote(@RequestBody TravelNote travelNote) {
         boolean result = travelNoteService.updateTravelNote(travelNote);

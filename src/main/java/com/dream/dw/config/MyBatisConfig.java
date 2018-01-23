@@ -28,7 +28,7 @@ public class MyBatisConfig {
         sqlSessionFactoryBean.setDataSource(druidConfig.mysqlDataSource());
         sqlSessionFactoryBean.setTypeAliasesPackage(typeAliasesPackage);
 
-        //添加XML目录
+        //add XML directory
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         try {
             sqlSessionFactoryBean.setMapperLocations(resolver.getResources(mapperLocations));

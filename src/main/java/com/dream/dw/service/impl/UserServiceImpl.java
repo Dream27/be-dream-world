@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         user.setStatus(1);
         int result = userMapper.updateByExampleSelective(user, userExample);
 
-        //发送激活邮件
+        //send active email
         loginService.sendActiveEmail(user);
         return result == 0 ? false:true;
     }
