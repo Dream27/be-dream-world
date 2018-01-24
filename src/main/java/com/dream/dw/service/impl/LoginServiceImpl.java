@@ -4,7 +4,6 @@ import com.dream.dw.dao.UserExample;
 import com.dream.dw.dao.UserMapper;
 import com.dream.dw.model.User;
 import com.dream.dw.service.LoginService;
-import com.dream.dw.service.UserService;
 import com.dream.dw.util.IdWorker;
 import com.dream.dw.util.JedisClusterUtils;
 import io.jstack.sendcloud4j.SendCloud;
@@ -12,9 +11,6 @@ import io.jstack.sendcloud4j.mail.Email;
 import io.jstack.sendcloud4j.mail.Result;
 import io.jstack.sendcloud4j.mail.Substitution;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -34,11 +30,7 @@ public class LoginServiceImpl implements LoginService {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andNameEqualTo(user.getName()).andPasswordEqualTo(user.getPassword());
         List<User> users = userMapper.selectByExample(userExample);
-        if(users.isEmpty()) {
-            return false;
-        } else {
-            return  true;
-        }
+        return users.isEmpty();
     }
 
     @Override
@@ -46,11 +38,7 @@ public class LoginServiceImpl implements LoginService {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andEmailEqualTo(user.getEmail()).andPasswordEqualTo(user.getPassword());
         List<User> users = userMapper.selectByExample(userExample);
-        if(users.isEmpty()) {
-            return false;
-        } else {
-            return  true;
-        }
+        return users.isEmpty();
     }
 
     @Override

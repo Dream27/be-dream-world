@@ -2,8 +2,6 @@ package com.dream.dw.service;
 
 import com.dream.dw.model.User;
 
-import java.util.List;
-
 /**
  * Created by Dream on 2017/12/29.
  */

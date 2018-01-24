@@ -1,20 +1,13 @@
 package com.dream.dw.controller;
 
+import com.dream.dw.exception.ErrorCode;
 import com.dream.dw.model.TravelNote;
+import com.dream.dw.response.Responses;
 import com.dream.dw.service.TravelNoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Dream on 2018/1/15.
@@ -25,25 +18,29 @@ import java.util.List;
 public class TravelNoteController {
 
     @Autowired
-    TravelNoteService travelNoteService;
+    private TravelNoteService travelNoteService;
 
     @GetMapping(value = "getNoteByUserId")
     public ResponseEntity getNotesByUserId(@RequestParam Long userId) {
-        List<TravelNote> travelNotes = travelNoteService.getTravelNoteByUserId(userId);
-        return new ResponseEntity(travelNotes, HttpStatus.OK);
+        TravelNote travelNote = travelNoteService.getTravelNoteByUserId(userId);
+        if (travelNote != null) {
+            return Responses.ok(travelNote);
+        } else {
+            return Responses.error(ErrorCode.ErrorCode_0100);
+        }
     }
 
     /**
-     * Tips:travelnote 'status' field: if travelnote is draft, status is equal to 1, else travelnote is published, status is equal to 0.
+     * Notes: travelnote 'status' field: if travelnote is draft, status is equal to 1, else travelnote is published, status is equal to 0.
      */
     @RequestMapping(value = "addNote")
     public ResponseEntity addNote(@RequestBody TravelNote travelNote) {
         //travelNote.setTime(new Date());
         boolean result = travelNoteService.addTravelNote(travelNote);
         if(result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0200);
         }
     }
 
@@ -52,23 +49,23 @@ public class TravelNoteController {
     public ResponseEntity deleteNote(@RequestParam Long noteId) {
         boolean result = travelNoteService.deleteTravelNote(noteId);
         if(result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0300);
         }
     }
 
     /**
-     * Tips:travelnote 'status' field: after update, if travelnote is still draft, status is equal to 1, else travelnote is published, status is equal to 0.
+     * Notes: travelnote 'status' field: after update, if travelnote is still draft, status is equal to 1, else travelnote is published, status is equal to 0.
      */
     @RequestMapping(value = "updateNote")
     //@CacheEvict(value = "note", key="'NOTE_' + #travelNote.noteId")
     public ResponseEntity updateNote(@RequestBody TravelNote travelNote) {
         boolean result = travelNoteService.updateTravelNote(travelNote);
         if(result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0400);
         }
     }
 
@@ -77,9 +74,9 @@ public class TravelNoteController {
     public ResponseEntity updateBrowserCount(@RequestParam Long noteId) {
         boolean result = travelNoteService.updateBrowserCount(noteId);
         if(result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0500);
         }
     }
 
@@ -88,9 +85,9 @@ public class TravelNoteController {
     public ResponseEntity updateCollectCount(@RequestParam Long noteId, @RequestParam int operate, @RequestParam Long userId) {
         boolean result = travelNoteService.updateCollectCount(noteId, operate, 1,userId);
         if(result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0600);
         }
     }
 
@@ -99,9 +96,9 @@ public class TravelNoteController {
     public ResponseEntity updateLikeCount(@RequestParam Long noteId, @RequestParam int operate, @RequestParam Long userId) {
         boolean result = travelNoteService.updateLikeCount(noteId, operate, 1,userId);
         if(result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0700);
         }
     }
 
@@ -110,9 +107,9 @@ public class TravelNoteController {
         String result = travelNoteService.uploadImg(file);
         if(result != null || !result.equals("")) {
             String fileUrl = "http://192.168.192.129/" + result;
-            return new ResponseEntity(fileUrl, HttpStatus.OK);
+            return Responses.ok(fileUrl);
         } else {
-            return new ResponseEntity("error", HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0800);
         }
     }
 
@@ -120,9 +117,9 @@ public class TravelNoteController {
     public ResponseEntity deleteImg(@RequestParam String key) {
         boolean result = travelNoteService.deleteImg(key);
         if(result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0900);
         }
     }
 

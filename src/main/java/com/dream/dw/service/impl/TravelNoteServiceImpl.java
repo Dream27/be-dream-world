@@ -17,10 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by Dream on 2018/1/15.
@@ -30,10 +28,13 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
     @Autowired
     TravelNoteMapper travelNoteMapper;
+
     @Autowired
     UserMapper userMapper;
+
     @Autowired
     CollectRecordMapper collectRecordMapper;
+
     @Autowired
     LikeRecordMapper likeRecordMapper;
 
@@ -41,10 +42,14 @@ public class TravelNoteServiceImpl implements TravelNoteService {
     FastFileStorageClient fastFileStorageClient;
 
     @Override
-    public List<TravelNote> getTravelNoteByUserId(Long userId) {
+    public TravelNote getTravelNoteByUserId(Long userId) {
         TravelNoteExample travelNoteExample = new TravelNoteExample();
         travelNoteExample.createCriteria().andUserIdEqualTo(userId);
-        return travelNoteMapper.selectByExample(travelNoteExample);
+        List<TravelNote> travelNotes = travelNoteMapper.selectByExample(travelNoteExample);
+        if(travelNotes.isEmpty()) {
+            return null;
+        }
+        return travelNotes.get(0);
     }
 
     @Override

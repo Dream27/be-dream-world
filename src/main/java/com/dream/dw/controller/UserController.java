@@ -1,14 +1,12 @@
 package com.dream.dw.controller;
 
-import com.dream.dw.exception.BaseException;
+import com.dream.dw.exception.ErrorCode;
 import com.dream.dw.model.User;
+import com.dream.dw.response.Responses;
 import com.dream.dw.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by Dream on 2018/1/10.
@@ -19,28 +17,25 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping(value = "getUserByUserId")
     public ResponseEntity getUserById(@RequestParam Long uid) {
         User user = userService.getUserById(uid);
         if (user != null) {
-            return new ResponseEntity(user, HttpStatus.OK);
+            return Responses.ok(user);
+        } else {
+            return Responses.error(ErrorCode.ErrorCode_0010);
         }
-
-        BaseException exception = new BaseException();
-        exception.setCode(1001);
-        exception.setMessage("user not found by id!");
-        return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value = "deleteUser")
     public ResponseEntity deleteUser(@RequestParam Long uid) {
         Boolean result = userService.deleteUser(uid);
         if (result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0020);
         }
     }
 
@@ -48,9 +43,9 @@ public class UserController {
     public ResponseEntity updatePwd(@RequestParam Long uid, @RequestParam String pwd) {
         Boolean result = userService.updatePwd(uid, pwd);
         if (result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0030);
         }
     }
 
@@ -58,9 +53,9 @@ public class UserController {
     public ResponseEntity updateName(@RequestParam Long uid, @RequestParam String name) {
         Boolean result = userService.updateName(uid, name);
         if (result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0030);
         }
     }
 
@@ -68,9 +63,9 @@ public class UserController {
     public ResponseEntity updateEmail(@RequestParam Long uid, @RequestParam String email) {
         Boolean result = userService.updateEmail(uid, email);
         if (result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0030);
         }
     }
 

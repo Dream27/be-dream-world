@@ -1,11 +1,11 @@
 package com.dream.dw.controller;
 
+import com.dream.dw.exception.ErrorCode;
 import com.dream.dw.model.User;
+import com.dream.dw.response.Responses;
 import com.dream.dw.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -15,45 +15,46 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/login")
 public class LoginController {
+
     @Autowired
     LoginService loginService;
 
     @RequestMapping(value = "loginByName", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity loginByName(@RequestBody User user) {
         if (user.getName() == null || user.getPassword() == null) {
-            return new ResponseEntity(0, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0001);
         }
         Boolean result = loginService.loginByName(user);
         if (result) {
-            return new ResponseEntity(user, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0001);
         }
     }
 
     @RequestMapping(value = "loginByEmail")
     public ResponseEntity loginByEmail(@RequestBody User user) {
         if (user.getEmail() == null || user.getPassword() == null) {
-            return new ResponseEntity(0, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0001);
         }
         Boolean result = loginService.loginByEmail(user);
         if (result) {
-            return new ResponseEntity(user, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0001);
         }
     }
 
     @RequestMapping(value = "register")
     public ResponseEntity registerUser(@RequestBody User user) {
         if (user.getPassword() == null) {
-            return new ResponseEntity(0, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0003);
         }
         int result = loginService.registerUser(user);
         if (1 == result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0003);
         }
     }
 
@@ -61,9 +62,9 @@ public class LoginController {
     public ResponseEntity active(@RequestParam String code) {
         Boolean result = loginService.activeUser(code);
         if (result) {
-            return new ResponseEntity(result, HttpStatus.OK);
+            return Responses.ok(true);
         } else {
-            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+            return Responses.error(ErrorCode.ErrorCode_0004);
         }
     }
 }
