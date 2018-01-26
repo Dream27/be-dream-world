@@ -29,6 +29,15 @@ fdfs:
   so-timeout: 1500
   connect-timeout: 600
   tracker-list: 192.168.192.129:22122
+  fileurl: http://192.168.192.129/
+
+#sendcloud:
+sendcloud:
+  apiUser: dream7_test_d01TQg
+  apiKey: DN4wAIhwrUJYFFyS
+  activetemplate: test_template_active
+  sendEmailAddress: 3373524374@qq.com.sendcloud.org
+  sendName: DreamWorld
 
 #redis:
 redis:

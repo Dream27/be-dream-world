@@ -2,17 +2,17 @@ package com.dream.dw.service.impl;
 
 import com.dream.dw.dao.UserExample;
 import com.dream.dw.dao.UserMapper;
+import com.dream.dw.email.emailFactory.EmailFactory;
 import com.dream.dw.model.User;
 import com.dream.dw.service.LoginService;
+import com.dream.dw.util.EmailUtils;
 import com.dream.dw.util.IdWorker;
 import com.dream.dw.util.JedisClusterUtils;
-import io.jstack.sendcloud4j.SendCloud;
 import io.jstack.sendcloud4j.mail.Email;
-import io.jstack.sendcloud4j.mail.Result;
-import io.jstack.sendcloud4j.mail.Substitution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -83,26 +83,20 @@ public class LoginServiceImpl implements LoginService {
     @Override
     //@CachePut(value = "activecode", key="#user.uid"+"")
     public String sendActiveEmail(User user) {
-        String apiUser = "dream7_test_d01TQg";
-        String apiKey = "DN4wAIhwrUJYFFyS";
-        SendCloud webapi = SendCloud.createWebApi(apiUser, apiKey);
         String code= UUID.randomUUID().toString().replace("-", "");
+        String activeUrl = "http://localhost:8080/login/active?code="+code;
 
-        Email email = Email.template("test_template_active")
-                .from("3373524374@qq.com.sendcloud.org")
-                .fromName("DreamWorld")
-                .substitutionVars(Substitution.sub()  // replace template variable
-                        .set("url", "http://localhost:8080/login/active?code="+code)
-                        .set("name", user.getName()))
-                .to(user.getEmail());
+        HashMap<String, String> content = new HashMap<>();
+        content.put("userName", user.getName());
+        content.put("activeUrl", activeUrl);
+        Email email = EmailFactory.createEmail("register_active", user.getEmail(), content);
 
-        Result result = webapi.mail().send(email);
-        if (result.isSuccess()) {
+        boolean result = EmailUtils.sendActiveEmail(email);
+        if (result) {
             //save the active code to redis
             JedisClusterUtils.saveString(code, user.getUserId()+"");
         }
-
-        return !result.isSuccess() ? "false":code;
+        return result ? code:"false";
     }
 
     @Override

@@ -68,7 +68,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         this.timeout = timeout;
     }
 
-//    @Bean
+    //    @Bean
 //    public KeyGenerator wiselyKeyGenerator(){
 //        return new KeyGenerator() {
 //            @Override
