@@ -1,11 +1,8 @@
 package com.dream.dw.email;
 
 import io.jstack.sendcloud4j.mail.Email;
-import io.jstack.sendcloud4j.mail.Substitution;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 

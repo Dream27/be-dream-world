@@ -9,6 +9,7 @@ import com.dream.dw.util.EmailUtils;
 import com.dream.dw.util.IdWorker;
 import com.dream.dw.util.JedisClusterUtils;
 import io.jstack.sendcloud4j.mail.Email;
+import io.jstack.sendcloud4j.mail.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -91,12 +92,14 @@ public class LoginServiceImpl implements LoginService {
         content.put("activeUrl", activeUrl);
         Email email = EmailFactory.createEmail("register_active", user.getEmail(), content);
 
-        boolean result = EmailUtils.sendActiveEmail(email);
-        if (result) {
+        Result result = EmailUtils.sendActiveEmail(email);
+        if (result.isSuccess()) {
             //save the active code to redis
             JedisClusterUtils.saveString(code, user.getUserId()+"");
+            return code;
         }
-        return result ? code:"false";
+        return "false";
+        //return result.getMessage();
     }
 
     @Override

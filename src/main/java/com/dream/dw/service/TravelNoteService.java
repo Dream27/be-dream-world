@@ -3,12 +3,18 @@ package com.dream.dw.service;
 import com.dream.dw.model.TravelNote;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * Created by Dream on 2018/1/14.
  */
 public interface TravelNoteService {
 
-    TravelNote getTravelNoteByUserId(Long userId);
+    List<TravelNote> getTravelNoteByUserId(Long userId);
+
+    List<TravelNote> getCollectTravelNoteByUserId(Long userId);
+
+    List<TravelNote> getLikeTravelNoteByUserId(Long userId);
 
     boolean addTravelNote(TravelNote travelNote);
 

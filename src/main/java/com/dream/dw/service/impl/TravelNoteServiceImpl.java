@@ -12,11 +12,14 @@ import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,14 +45,58 @@ public class TravelNoteServiceImpl implements TravelNoteService {
     FastFileStorageClient fastFileStorageClient;
 
     @Override
-    public TravelNote getTravelNoteByUserId(Long userId) {
+    @Cacheable(value = "note", key = "'NOTE_' + #userId")  //(cache？？？？by what？？？？can not cache by noteID ？？？？？)
+    public List<TravelNote> getTravelNoteByUserId(Long userId) {
         TravelNoteExample travelNoteExample = new TravelNoteExample();
         travelNoteExample.createCriteria().andUserIdEqualTo(userId);
         List<TravelNote> travelNotes = travelNoteMapper.selectByExample(travelNoteExample);
         if(travelNotes.isEmpty()) {
             return null;
         }
-        return travelNotes.get(0);
+        return travelNotes;
+    }
+
+    @Override                                                       //cache？？？？？？？？？
+    public List<TravelNote> getCollectTravelNoteByUserId(Long userId) {
+        CollectRecordExample collectRecordExample = new CollectRecordExample();
+        collectRecordExample.createCriteria().andUserIdEqualTo(userId);
+        List<CollectRecord> collectRecords = collectRecordMapper.selectByExample(collectRecordExample);
+        if(collectRecords.isEmpty()) {
+            return null;
+        }
+
+        List<Long> travelNoteIds = new ArrayList<>();
+        for(CollectRecord collectRecord: collectRecords) {
+            travelNoteIds.add(collectRecord.getNoteId());
+        }
+
+        TravelNoteExample travelNoteExample = new TravelNoteExample();
+        travelNoteExample.createCriteria().andNoteIdIn(travelNoteIds);
+        List<TravelNote> travelNotes = travelNoteMapper.selectByExample(travelNoteExample);
+        if(travelNotes.isEmpty()) {
+            return null;
+        }
+        return travelNotes;
+    }
+
+    @Override                                                       //cache？？？？？？？？？
+    public List<TravelNote> getLikeTravelNoteByUserId(Long userId) {
+        LikeRecordExample likeRecordExample = new  LikeRecordExample();
+        likeRecordExample.createCriteria().andUserIdEqualTo(userId);
+        List< LikeRecord> likeRecords = likeRecordMapper.selectByExample(likeRecordExample);
+
+        List<Long> travelNoteIds = new ArrayList<>();
+        for( LikeRecord likeRecord: likeRecords) {
+            travelNoteIds.add(likeRecord.getNoteId());
+        }
+
+        TravelNoteExample travelNoteExample = new TravelNoteExample();
+        travelNoteExample.createCriteria().andNoteIdIn(travelNoteIds);
+        List<TravelNote> travelNotes = travelNoteMapper.selectByExample(travelNoteExample);
+        if(travelNotes.isEmpty()) {
+            return null;
+        }
+        return travelNotes;
     }
 
     @Override
@@ -62,6 +109,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "note", key="'NOTE_' + #noteId")
     public boolean deleteTravelNote(long noteId) {
         TravelNoteExample travelNoteExample = new TravelNoteExample();
         travelNoteExample.createCriteria().andNoteIdEqualTo(noteId);
@@ -78,6 +126,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
     }
 
     @Override
+    @CacheEvict(value = "note", key="'NOTE_' + #travelNote.noteId")
     public boolean updateTravelNote(TravelNote travelNote) {
         TravelNoteExample travelNoteExample = new TravelNoteExample();
         travelNoteExample.createCriteria().andNoteIdEqualTo(travelNote.getNoteId());
@@ -86,6 +135,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
     }
 
     @Override
+    @CacheEvict(value = "note", key="'NOTE_' + #noteId")
     public boolean updateBrowserCount(long noteId) {
         TravelNoteExample travelNoteExample = new TravelNoteExample();
         travelNoteExample.createCriteria().andNoteIdEqualTo(noteId);
@@ -93,7 +143,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
         if(travelNotes.isEmpty()) {
             return false;
         }
-        TravelNote travelNote = new TravelNote();   //有必要重新创建一个对象吗？？？？？？？？？？？？
+        TravelNote travelNote = new TravelNote();   //create a new object？？？？？？？？？？？？
         travelNote.setBrowserCount(travelNotes.get(0).getBrowserCount() + 1);
         int result = travelNoteMapper.updateByExampleSelective(travelNote, travelNoteExample);
         return result == 0 ? false:true;
@@ -101,6 +151,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "note", key="'NOTE_' + #noteId")    //删除收藏记录缓存吗？？？？？？   因暂时没缓存收藏记录，所以暂不删除，喜爱记录同理
     public boolean updateCollectCount(long noteId, int operate, int value, long userId) {
         //1.add/delete user collect record
         int flag;
@@ -124,7 +175,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
                     //had been collect：update
                     CollectRecord collectRecord = new CollectRecord();
                     collectRecord.setStatus(0);
-                    collectRecord.setCreateTime(new Date());    //时间是有问题的！！！！！！！！！！！！
+                    collectRecord.setCreateTime(new Date());    //date is error ！！！！！！！！！！！！！！！！！！！！
                     result1 = collectRecordMapper.updateByExampleSelective(collectRecord, collectRecordExample);
 
                     flag = 1;
@@ -156,7 +207,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
             if(travelNotes.isEmpty()) {
                 return false;
             }
-            TravelNote travelNote = new TravelNote();   //有必要重新创建一个对象吗？？？？？？？？？？？？
+            TravelNote travelNote = new TravelNote();   //create a new object？？？？？？？？？？？？
             if(operate == 0)
             {
                 travelNote.setCollectCount(travelNotes.get(0).getCollectCount() - value);
@@ -183,6 +234,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "note", key="'NOTE_' + #noteId")
     public boolean updateLikeCount(long noteId, int operate, int value, long userId) {
         //1.add/delete user like record
         int flag;
@@ -238,7 +290,7 @@ public class TravelNoteServiceImpl implements TravelNoteService {
             if(travelNotes.isEmpty()) {
                 return false;
             }
-            TravelNote travelNote = new TravelNote();   //有必要重新创建一个对象吗？？？？？？？？？？？？
+            TravelNote travelNote = new TravelNote();   //create a new object？？？？？？？？？？？？
             if(operate == 0)
             {
                 travelNote.setLikeCount(travelNotes.get(0).getLikeCount() - value);

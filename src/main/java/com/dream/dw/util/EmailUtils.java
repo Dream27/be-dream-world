@@ -35,9 +35,9 @@ public class EmailUtils {
         this.apiKey = apiKey;
     }
 
-    public static boolean sendActiveEmail(Email email) {
+    public static Result sendActiveEmail(Email email) {
         webapi = SendCloud.createWebApi(apiUser, apiKey);
         Result result = webapi.mail().send(email);
-        return result.isSuccess();
+        return result;
     }
 }

@@ -80,7 +80,7 @@ public class TravelNote {
      *
      * @mbg.generated
      */
-    private String time;
+    private Date time;
 
     /**
      *
@@ -127,7 +127,6 @@ public class TravelNote {
      *
      * @mbg.generated
      */
-    //private String createTime;
     private Date createTime;
 
     /**
@@ -326,7 +325,7 @@ public class TravelNote {
      *
      * @mbg.generated
      */
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
@@ -338,7 +337,7 @@ public class TravelNote {
      *
      * @mbg.generated
      */
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
