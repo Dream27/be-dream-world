@@ -4,11 +4,6 @@ package com.dream.dw.response;
  * Response result.
  */
 public class ResponsesBody<T> {
-    public static final String SUCCESS = "success";
-
-    public static final String ERROR = "error";
-
-    public static final String NO_RELATED_DATA = "no related data";
 
     private Integer errorCode;
 
@@ -38,13 +33,6 @@ public class ResponsesBody<T> {
 
     public void setResult(T result) {
         this.result = result;
-    }
-
-    public void updateResponseResult(Integer errorCode, String message, T result)
-    {
-        this.errorCode = errorCode;
-        this.result = result;
-        this.message = message;
     }
 
     public ResponsesBody() {

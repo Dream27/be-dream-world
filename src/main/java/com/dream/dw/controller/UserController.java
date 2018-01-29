@@ -3,6 +3,7 @@ package com.dream.dw.controller;
 import com.dream.dw.exception.ErrorCode;
 import com.dream.dw.model.User;
 import com.dream.dw.response.Responses;
+import com.dream.dw.service.LoginService;
 import com.dream.dw.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +12,64 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by Dream on 2018/1/10.
  */
-@CrossOrigin
 @RestController
 @RequestMapping( value = "/user")
 public class UserController {
 
     @Autowired
+    LoginService loginService;
+
+    @Autowired
     private UserService userService;
+
+    @PostMapping(value = "loginByName")
+    public ResponseEntity loginByName(@RequestBody User user) {
+        if (user.getName() == null || user.getPassword() == null) {
+            return Responses.error(ErrorCode.ErrorCode_0001);
+        }
+        Boolean result = loginService.loginByName(user);
+        if (result) {
+            return Responses.ok(true);
+        } else {
+            return Responses.error(ErrorCode.ErrorCode_0001);
+        }
+    }
+
+    @PostMapping(value = "loginByEmail")
+    public ResponseEntity loginByEmail(@RequestBody User user) {
+        if (user.getEmail() == null || user.getPassword() == null) {
+            return Responses.error(ErrorCode.ErrorCode_0001);
+        }
+        Boolean result = loginService.loginByEmail(user);
+        if (result) {
+            return Responses.ok(true);
+        } else {
+            return Responses.error(ErrorCode.ErrorCode_0001);
+        }
+    }
+
+    @PostMapping(value = "register")
+    public ResponseEntity registerUser(@RequestBody User user) {
+        if (user.getPassword() == null) {
+            return Responses.error(ErrorCode.ErrorCode_0003);
+        }
+        int result = loginService.registerUser(user);
+        if (1 == result) {
+            return Responses.ok(true);
+        } else {
+            return Responses.error(ErrorCode.ErrorCode_0003);
+        }
+    }
+
+    @PutMapping(value = "active")
+    public ResponseEntity active(@RequestParam String code) {
+        Boolean result = loginService.activeUser(code);
+        if (result) {
+            return Responses.ok(true);
+        } else {
+            return Responses.error(ErrorCode.ErrorCode_0004);
+        }
+    }
 
     @GetMapping(value = "getUserByUserId")
     public ResponseEntity getUserById(@RequestParam Long uid) {
