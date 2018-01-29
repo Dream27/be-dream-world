@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Created by Dream on 2018/1/24.
  */
@@ -24,14 +26,16 @@ public class EmailUtils {
 
     private String fromEmailAddress;
 
-    @Bean
-    private MailWebApi mailWebApi() {
-        return SendCloud.createWebApi(apiUser, apiKey).mail();
+    private MailWebApi mailWebApi;
+
+    @PostConstruct
+    private void init() {
+        mailWebApi = SendCloud.createWebApi(apiUser, apiKey).mail();
     }
 
     public Result sendEmail(Email email) {
         email.from(fromEmailAddress).fromName(fromName);
-        return mailWebApi().send(email);
+        return mailWebApi.send(email);
     }
 
 }
