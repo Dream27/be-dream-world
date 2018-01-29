@@ -3,17 +3,15 @@ package com.dream.dw.service.impl;
 import com.dream.dw.dao.UserExample;
 import com.dream.dw.dao.UserMapper;
 import com.dream.dw.email.EmailFactory;
+import com.dream.dw.email.EmailUtils;
 import com.dream.dw.model.User;
 import com.dream.dw.service.LoginService;
-import com.dream.dw.email.EmailUtils;
 import com.dream.dw.util.IdWorker;
 import com.dream.dw.util.JedisClusterUtils;
-import io.jstack.sendcloud4j.mail.Email;
 import io.jstack.sendcloud4j.mail.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,9 +23,6 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private EmailUtils emailUtils;
 
     @Override
     public boolean loginByName(User user) {
@@ -91,7 +86,7 @@ public class LoginServiceImpl implements LoginService {
         String activeUrl = "http://localhost:8080/login/active?code="+code;
 
         // send email
-        Result result = emailUtils.sendEmail(EmailFactory.newRegisterActiveEmail(user.getEmail(), user.getName(), activeUrl));
+        Result result = EmailUtils.sendEmail(EmailFactory.newRegisterActiveEmail(user.getEmail(), user.getName(), activeUrl));
 
         if (result.isSuccess()) {
             //save the active code to redis

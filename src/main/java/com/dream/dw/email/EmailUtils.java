@@ -4,6 +4,7 @@ import io.jstack.sendcloud4j.SendCloud;
 import io.jstack.sendcloud4j.mail.Email;
 import io.jstack.sendcloud4j.mail.MailWebApi;
 import io.jstack.sendcloud4j.mail.Result;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import javax.annotation.PostConstruct;
  */
 @Component
 @ConfigurationProperties(prefix = "email.sendcloud")
+@Data
 public class EmailUtils {
 
     private String apiUser;
@@ -28,14 +30,17 @@ public class EmailUtils {
 
     private MailWebApi mailWebApi;
 
+    private static EmailUtils emailUtils;
+
     @PostConstruct
     private void init() {
         mailWebApi = SendCloud.createWebApi(apiUser, apiKey).mail();
+        emailUtils = this;
     }
 
-    public Result sendEmail(Email email) {
-        email.from(fromEmailAddress).fromName(fromName);
-        return mailWebApi.send(email);
+    public static Result sendEmail(Email email) {
+        email.from(emailUtils.fromEmailAddress).fromName(emailUtils.fromName);
+        return emailUtils.mailWebApi.send(email);
     }
 
 }
