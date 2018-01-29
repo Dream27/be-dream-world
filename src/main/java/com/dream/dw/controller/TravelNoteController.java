@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * Created by Dream on 2018/1/15.
  */
-@CrossOrigin
 @RestController
 @RequestMapping(value = "/note")
 public class TravelNoteController {
@@ -27,9 +26,6 @@ public class TravelNoteController {
     private String furl;
 
     /* Notes: when select all notes, need to know whether notes are collect or like by the user, [so maybe use dao?] ！！！！！！！！！！！！！！*/
-
-
-
     @GetMapping(value = "getNoteByUserId")
     public ResponseEntity getNotesByUserId(@RequestParam Long userId) {
         List<TravelNote> travelNotes = travelNoteService.getTravelNoteByUserId(userId);
@@ -119,7 +115,7 @@ public class TravelNoteController {
 
     @GetMapping(value = "increaseLikeCount")
     public ResponseEntity updateLikeCount(@RequestParam Long noteId, @RequestParam int operate, @RequestParam Long userId) {
-        boolean result = travelNoteService.updateLikeCount(noteId, operate, 1,userId);
+        boolean result = travelNoteService.updateLikeCount(noteId, operate, 1, userId);
         if(result) {
             return Responses.ok(true);
         } else {
