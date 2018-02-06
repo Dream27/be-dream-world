@@ -5,7 +5,6 @@ import com.dream.dw.model.TravelNote;
 import com.dream.dw.response.Responses;
 import com.dream.dw.service.TravelNoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +20,6 @@ public class TravelNoteController {
 
     @Autowired
     private TravelNoteService travelNoteService;
-
-    @Value("${fdfs.fileurl}")
-    private String furl;
 
     /* Notes: when select all notes, need to know whether notes are collect or like by the user, [so maybe use dao?] ！！！！！！！！！！！！！！*/
     @GetMapping(value = "getNoteByUserId")
@@ -127,8 +123,7 @@ public class TravelNoteController {
     public ResponseEntity uploadImg(@RequestBody MultipartFile file) {
         String result = travelNoteService.uploadImg(file);
         if(result != null || !result.equals("")) {
-            String fileUrl = furl + result;
-            return Responses.ok(fileUrl);
+            return Responses.ok(result);
         } else {
             return Responses.error(ErrorCode.ErrorCode_1107);
         }

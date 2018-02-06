@@ -60,15 +60,6 @@ redis:
   # 连接超时时间（毫秒）
   timeout: 0
 
-#activemq
-  spring.activemq.broker-url : tcp://192.168.35.145:61616
-  spring.activemq.user : admin
-  spring.activemq.password : admin
-  spring.activemq.pool.enabled : true
-  spring.activemq.pool.max-connections : 50
-  spring.activemq.pool.expiry-timeout : 10000
-  spring.activemq.pool.idle-timeout : 30000
-
 #baseurl
 baseurl:
-  serverurl: http://localhost:8080/
+  serverurl: http://localhost:8080/user/active?code=

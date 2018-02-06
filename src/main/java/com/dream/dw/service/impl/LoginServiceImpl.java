@@ -89,7 +89,7 @@ public class LoginServiceImpl implements LoginService {
     //@CachePut(value = "activecode", key="#user.uid"+"")
     public String sendActiveEmail(User user) {
         String code= UUID.randomUUID().toString().replace("-", "");
-        String activeUrl = serverUrl + "user/active?code="+code;
+        String activeUrl = serverUrl + code;
 
         // send email
         Result result = EmailUtils.sendEmail(EmailFactory.newRegisterActiveEmail(user.getEmail(), user.getName(), activeUrl));
