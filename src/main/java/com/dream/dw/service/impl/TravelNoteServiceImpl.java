@@ -6,11 +6,8 @@ import com.dream.dw.model.LikeRecord;
 import com.dream.dw.model.TravelNote;
 import com.dream.dw.model.User;
 import com.dream.dw.service.TravelNoteService;
+import com.dream.dw.util.FastdfsUtils;
 import com.dream.dw.util.IdWorker;
-
-import com.github.tobato.fastdfs.domain.StorePath;
-import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,9 +36,6 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
     @Autowired
     LikeRecordMapper likeRecordMapper;
-
-    @Autowired
-    FastFileStorageClient fastFileStorageClient;
 
     @Override
     @Cacheable(value = "note", key = "'NOTE_' + #userId")  //(cache？？？？by what？？？？can not cache by noteID ？？？？？)
@@ -318,27 +311,12 @@ public class TravelNoteServiceImpl implements TravelNoteService {
 
     @Override
     public String uploadImg(MultipartFile file) {
-        try{
-            StorePath storePath = fastFileStorageClient.uploadFile(file.getInputStream(), file.getSize(),
-                    FilenameUtils.getExtension(file.getOriginalFilename()), null);
-            String key = storePath.getFullPath();
-            return key;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-            //String key = FastDFSClient.uploadFile(file, "kk.jpg");
+        return FastdfsUtils.uploadFile(file);
     }
 
     @Override
     public boolean deleteImg(String key) {
-        try {
-            fastFileStorageClient.deleteFile(key);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        return FastdfsUtils.deleteFile(key);
     }
 
 }

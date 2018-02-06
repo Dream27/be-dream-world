@@ -5,8 +5,8 @@ import com.dream.dw.model.TravelNote;
 import com.dream.dw.response.Responses;
 import com.dream.dw.service.TravelNoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,9 +22,6 @@ public class TravelNoteController {
     @Autowired
     private TravelNoteService travelNoteService;
 
-    @Value("${fdfs.fileurl}")
-    private String furl;
-
     /* Notes: when select all notes, need to know whether notes are collect or like by the user, [so maybe use dao?] ！！！！！！！！！！！！！！*/
     @GetMapping(value = "getNoteByUserId")
     public ResponseEntity getNotesByUserId(@RequestParam Long userId) {
@@ -32,7 +29,7 @@ public class TravelNoteController {
         if (travelNotes != null) {
             return Responses.ok(travelNotes);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0100);
+            return Responses.error(ErrorCode.ErrorCode_1100);
         }
     }
 
@@ -42,7 +39,7 @@ public class TravelNoteController {
         if (travelNotes != null) {
             return Responses.ok(travelNotes);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0100);
+            return Responses.error(ErrorCode.ErrorCode_1100);
         }
     }
 
@@ -52,7 +49,7 @@ public class TravelNoteController {
         if (travelNotes != null) {
             return Responses.ok(travelNotes);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0100);
+            return Responses.error(ErrorCode.ErrorCode_1100);
         }
     }
 
@@ -66,7 +63,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0200);
+            return Responses.error(ErrorCode.ErrorCode_1101);
         }
     }
 
@@ -76,7 +73,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0300);
+            return Responses.error(ErrorCode.ErrorCode_1102);
         }
     }
 
@@ -89,7 +86,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0400);
+            return Responses.error(ErrorCode.ErrorCode_1103);
         }
     }
 
@@ -99,7 +96,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0500);
+            return Responses.error(ErrorCode.ErrorCode_1104);
         }
     }
 
@@ -109,7 +106,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0600);
+            return Responses.error(ErrorCode.ErrorCode_1105);
         }
     }
 
@@ -119,18 +116,17 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0700);
+            return Responses.error(ErrorCode.ErrorCode_1106);
         }
     }
 
     @RequestMapping(value = "uploadImg")
     public ResponseEntity uploadImg(@RequestBody MultipartFile file) {
-        String result = travelNoteService.uploadImg(file);
-        if(result != null || !result.equals("")) {
-            String fileUrl = furl + result;
-            return Responses.ok(fileUrl);
+        String imgUrl = travelNoteService.uploadImg(file);
+        if(!StringUtils.isEmpty(imgUrl)) {
+            return Responses.ok(imgUrl);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0800);
+            return Responses.error(ErrorCode.ErrorCode_1107);
         }
     }
 
@@ -140,7 +136,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0900);
+            return Responses.error(ErrorCode.ErrorCode_1108);
         }
     }
 

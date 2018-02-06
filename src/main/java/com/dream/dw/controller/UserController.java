@@ -25,39 +25,39 @@ public class UserController {
     @PostMapping(value = "loginByName")
     public ResponseEntity loginByName(@RequestBody User user) {
         if (user.getName() == null || user.getPassword() == null) {
-            return Responses.error(ErrorCode.ErrorCode_0001);
+            return Responses.error(ErrorCode.ErrorCode_1000);
         }
         Boolean result = loginService.loginByName(user);
         if (result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0001);
+            return Responses.error(ErrorCode.ErrorCode_1000);
         }
     }
 
     @PostMapping(value = "loginByEmail")
     public ResponseEntity loginByEmail(@RequestBody User user) {
         if (user.getEmail() == null || user.getPassword() == null) {
-            return Responses.error(ErrorCode.ErrorCode_0001);
+            return Responses.error(ErrorCode.ErrorCode_1000);
         }
         Boolean result = loginService.loginByEmail(user);
         if (result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0001);
+            return Responses.error(ErrorCode.ErrorCode_1000);
         }
     }
 
     @PostMapping(value = "register")
     public ResponseEntity registerUser(@RequestBody User user) {
         if (user.getPassword() == null) {
-            return Responses.error(ErrorCode.ErrorCode_0003);
+            return Responses.error(ErrorCode.ErrorCode_1002);
         }
         int result = loginService.registerUser(user);
         if (1 == result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0003);
+            return Responses.error(ErrorCode.ErrorCode_1002);
         }
     }
 
@@ -67,7 +67,7 @@ public class UserController {
         if (result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0004);
+            return Responses.error(ErrorCode.ErrorCode_1003);
         }
     }
 
@@ -77,7 +77,7 @@ public class UserController {
         if (user != null) {
             return Responses.ok(user);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0010);
+            return Responses.error(ErrorCode.ErrorCode_1004);
         }
     }
 
@@ -87,7 +87,7 @@ public class UserController {
         if (result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0020);
+            return Responses.error(ErrorCode.ErrorCode_1005);
         }
     }
 
@@ -97,7 +97,7 @@ public class UserController {
         if (result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0030);
+            return Responses.error(ErrorCode.ErrorCode_1006);
         }
     }
 
@@ -107,7 +107,7 @@ public class UserController {
         if (result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0030);
+            return Responses.error(ErrorCode.ErrorCode_1006);
         }
     }
 
@@ -117,7 +117,7 @@ public class UserController {
         if (result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0030);
+            return Responses.error(ErrorCode.ErrorCode_1006);
         }
     }
 

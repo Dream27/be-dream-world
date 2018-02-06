@@ -9,7 +9,9 @@ import com.dream.dw.service.LoginService;
 import com.dream.dw.util.IdWorker;
 import com.dream.dw.util.JedisClusterUtils;
 import io.jstack.sendcloud4j.mail.Result;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,10 +21,14 @@ import java.util.UUID;
  * Created by Dream on 2018/1/10.
  */
 @Component
+@Data
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Value("${url.activeUrl}")
+    private String activeUrl;
 
     @Override
     public boolean loginByName(User user) {
@@ -83,7 +89,7 @@ public class LoginServiceImpl implements LoginService {
     //@CachePut(value = "activecode", key="#user.uid"+"")
     public String sendActiveEmail(User user) {
         String code= UUID.randomUUID().toString().replace("-", "");
-        String activeUrl = "http://localhost:8080/login/active?code="+code;
+        String activeUrl = this.activeUrl + code;
 
         // send email
         Result result = EmailUtils.sendEmail(EmailFactory.newRegisterActiveEmail(user.getEmail(), user.getName(), activeUrl));
