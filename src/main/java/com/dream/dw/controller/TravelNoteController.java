@@ -32,7 +32,7 @@ public class TravelNoteController {
         if (travelNotes != null) {
             return Responses.ok(travelNotes);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0100);
+            return Responses.error(ErrorCode.ErrorCode_1100);
         }
     }
 
@@ -42,7 +42,7 @@ public class TravelNoteController {
         if (travelNotes != null) {
             return Responses.ok(travelNotes);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0100);
+            return Responses.error(ErrorCode.ErrorCode_1100);
         }
     }
 
@@ -52,7 +52,7 @@ public class TravelNoteController {
         if (travelNotes != null) {
             return Responses.ok(travelNotes);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0100);
+            return Responses.error(ErrorCode.ErrorCode_1100);
         }
     }
 
@@ -66,7 +66,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0200);
+            return Responses.error(ErrorCode.ErrorCode_1101);
         }
     }
 
@@ -76,7 +76,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0300);
+            return Responses.error(ErrorCode.ErrorCode_1102);
         }
     }
 
@@ -89,7 +89,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0400);
+            return Responses.error(ErrorCode.ErrorCode_1103);
         }
     }
 
@@ -99,7 +99,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0500);
+            return Responses.error(ErrorCode.ErrorCode_1104);
         }
     }
 
@@ -109,7 +109,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0600);
+            return Responses.error(ErrorCode.ErrorCode_1105);
         }
     }
 
@@ -119,7 +119,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0700);
+            return Responses.error(ErrorCode.ErrorCode_1106);
         }
     }
 
@@ -130,7 +130,7 @@ public class TravelNoteController {
             String fileUrl = furl + result;
             return Responses.ok(fileUrl);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0800);
+            return Responses.error(ErrorCode.ErrorCode_1107);
         }
     }
 
@@ -140,7 +140,7 @@ public class TravelNoteController {
         if(result) {
             return Responses.ok(true);
         } else {
-            return Responses.error(ErrorCode.ErrorCode_0900);
+            return Responses.error(ErrorCode.ErrorCode_1108);
         }
     }
 
