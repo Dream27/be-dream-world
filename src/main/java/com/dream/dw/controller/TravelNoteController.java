@@ -6,6 +6,7 @@ import com.dream.dw.response.Responses;
 import com.dream.dw.service.TravelNoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -121,9 +122,9 @@ public class TravelNoteController {
 
     @RequestMapping(value = "uploadImg")
     public ResponseEntity uploadImg(@RequestBody MultipartFile file) {
-        String result = travelNoteService.uploadImg(file);
-        if(result != null || !result.equals("")) {
-            return Responses.ok(result);
+        String imgUrl = travelNoteService.uploadImg(file);
+        if(!StringUtils.isEmpty(imgUrl)) {
+            return Responses.ok(imgUrl);
         } else {
             return Responses.error(ErrorCode.ErrorCode_1107);
         }

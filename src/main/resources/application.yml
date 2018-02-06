@@ -24,7 +24,7 @@ mybatis:
   typeAliasesPackage: com.dream.dw.dao
   mapperLocations: classpath*:mapping/*Mapper.xml
 
-#fastdfs
+# Fastdfs
 fdfs:
   so-timeout: 1500
   connect-timeout: 600
@@ -39,7 +39,7 @@ email:
     fromEmailAddress: 3373524374@qq.com.sendcloud.org
     fromName: DreamWorld
 
-#redis:
+# Redis
 redis:
   # Redis数据库索引（默认为0）
   database: 0
@@ -60,6 +60,6 @@ redis:
   # 连接超时时间（毫秒）
   timeout: 0
 
-#baseurl
-baseurl:
-  serverurl: http://localhost:8080/user/active?code=
+# Urls
+url:
+  activeUrl: http://localhost:8080/user/active?code=

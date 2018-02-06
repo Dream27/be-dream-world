@@ -27,8 +27,8 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private UserMapper userMapper;
 
-    @Value("${baseurl.serverurl}")
-    private String serverUrl;
+    @Value("${url.activeUrl}")
+    private String activeUrl;
 
     @Override
     public boolean loginByName(User user) {
@@ -89,7 +89,7 @@ public class LoginServiceImpl implements LoginService {
     //@CachePut(value = "activecode", key="#user.uid"+"")
     public String sendActiveEmail(User user) {
         String code= UUID.randomUUID().toString().replace("-", "");
-        String activeUrl = serverUrl + code;
+        String activeUrl = this.activeUrl + code;
 
         // send email
         Result result = EmailUtils.sendEmail(EmailFactory.newRegisterActiveEmail(user.getEmail(), user.getName(), activeUrl));

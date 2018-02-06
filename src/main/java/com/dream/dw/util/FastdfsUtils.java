@@ -19,9 +19,9 @@ import java.io.IOException;
 public class FastdfsUtils {
 
     @Autowired
-    private  FastFileStorageClient fastFileStorageClient;
+    private FastFileStorageClient fastFileStorageClient;
 
-    private  static FastdfsUtils fastdfsUtils;
+    private static FastdfsUtils fastdfsUtils;
 
     @Value("${fdfs.fileurl}")
     private String webServerUrl;
@@ -55,8 +55,7 @@ public class FastdfsUtils {
     }
 
     private static String getAccessUrl(StorePath storePath) {
-        String fileUrl = fastdfsUtils.webServerUrl + storePath.getFullPath();
-        return fileUrl;
+        return fastdfsUtils.webServerUrl + storePath.getFullPath();
     }
 
     public static boolean deleteFile(String key) {
