@@ -1,4 +1,4 @@
-package com.dream.dw.mq.activemq.test;
+package com.dream.dw.mq.activemq;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;

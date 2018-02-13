@@ -1,4 +1,4 @@
-package com.dream.dw.mq.activemq.test;
+package com.dream.dw.mq.activemq;
 
 public interface MessageQueue {
 

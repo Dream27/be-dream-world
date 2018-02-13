@@ -1,4 +1,4 @@
-package com.dream.dw.mq.activemq.test;
+package com.dream.dw.mq.activemq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
