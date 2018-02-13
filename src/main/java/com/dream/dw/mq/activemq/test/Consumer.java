@@ -14,8 +14,8 @@ public class Consumer {
      * Listener to listen mytest.queue
      * @param message Message.
      */
-    @JmsListener(destination = "test.queue")
-    public void myTestQueueListener(String message) {
+    @JmsListener(destination = MessageQueue.EMAIL_QUEUE)
+    public void emailQueueListener(String message) {
         logger.error("Received message from test.queue: " + message);
     }
 

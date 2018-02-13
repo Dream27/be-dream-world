@@ -25,7 +25,7 @@ public class Producer {
 
     @PostConstruct
     private void test() {
-        Destination destination = new ActiveMQQueue("test.queue");
+        Destination destination = new ActiveMQQueue(MessageQueue.EMAIL_QUEUE);
         sendMessage(destination, "This is a test message.");
     }
 
