@@ -2,13 +2,12 @@ package com.dream.dw.service.impl;
 
 import com.dream.dw.dao.UserExample;
 import com.dream.dw.dao.UserMapper;
-import com.dream.dw.email.EmailFactory;
-import com.dream.dw.email.EmailUtils;
 import com.dream.dw.model.User;
+import com.dream.dw.mq.activemq.MessageFactory;
+import com.dream.dw.mq.activemq.MessageProducer;
 import com.dream.dw.service.LoginService;
 import com.dream.dw.util.IdWorker;
 import com.dream.dw.util.JedisClusterUtils;
-import io.jstack.sendcloud4j.mail.Result;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -91,16 +90,11 @@ public class LoginServiceImpl implements LoginService {
         String code= UUID.randomUUID().toString().replace("-", "");
         String activeUrl = this.activeUrl + code;
 
-        // send email
-        Result result = EmailUtils.sendEmail(EmailFactory.newRegisterActiveEmail(user.getEmail(), user.getName(), activeUrl));
+        // send email message to activemq
+        MessageProducer.sendMessage(MessageFactory.getEmailMessage(user.getEmail(), user.getName(), activeUrl));
 
-        if (result.isSuccess()) {
-            //save the active code to redis
-            JedisClusterUtils.saveString(code, user.getUserId()+"");
-            return code;
-        }
-        return "false";
-        //return result.getMessage();
+        JedisClusterUtils.saveString(code, user.getUserId()+"");
+        return code;
     }
 
     @Override
