@@ -1,8 +1,9 @@
 package com.dream.dw.mq.activemq;
 
-import com.alibaba.fastjson.JSONObject;
 import com.dream.dw.email.EmailFactory;
 import com.dream.dw.email.EmailUtils;
+import com.dream.dw.mq.message.EmailMessage;
+import com.dream.dw.mq.message.MQMessage;
 import io.jstack.sendcloud4j.mail.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +17,12 @@ public class MessageConsumer {
 
     /**
      * Listener to listen mytest.queue
-     * @param messageBody JSONObject.
+     * @param message Message.
      */
     @JmsListener(destination = MessageQueue.EMAIL_QUEUE)
-    public void emailQueueListener(JSONObject messageBody) {
-        Result result = EmailUtils.sendEmail(EmailFactory.newRegisterActiveEmail((String) messageBody.get("toEmailAddress"), (String) messageBody.get("userName"), (String) messageBody.get("activeUrl")));
+    public void emailQueueListener(MQMessage message) {
+        EmailMessage emailMessage = (EmailMessage)message;
+        Result result = EmailUtils.sendEmail(EmailFactory.newRegisterActiveEmail(emailMessage.getToEmailAddress(), emailMessage.getUserName(), emailMessage.getActiveUrl()));
 //        if (result.isSuccess()) {
 //
 //        }

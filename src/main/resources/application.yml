@@ -25,6 +25,7 @@ spring:
     # tcp://localhost:61616
     broker-url: tcp://192.168.35.145:2704
     in-memory: true
+    packages.trust-all: true
     pool:
       enabled: true
 

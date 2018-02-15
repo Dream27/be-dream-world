@@ -1,6 +1,7 @@
 package com.dream.dw.mq.activemq;
 
-import com.alibaba.fastjson.JSONObject;
+import com.dream.dw.mq.message.MQMessage;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,10 @@ public class MessageProducer {
 
     /**
      * Send message to destination.
-     * @param message Message.
+     * @param message MQMessage.
      */
-    static public void sendMessage(final JSONObject message) {
-        messageProducer.jmsTemplate.convertAndSend((Destination) message.get("destination"), message.get("messageBody"));
+    static public void sendMessage(final MQMessage message) {
+        Destination destination = new ActiveMQQueue(message.getDestination());
+        messageProducer.jmsTemplate.convertAndSend(destination, message);
     }
 }

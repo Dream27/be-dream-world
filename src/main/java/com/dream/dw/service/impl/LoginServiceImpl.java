@@ -3,7 +3,7 @@ package com.dream.dw.service.impl;
 import com.dream.dw.dao.UserExample;
 import com.dream.dw.dao.UserMapper;
 import com.dream.dw.model.User;
-import com.dream.dw.mq.activemq.MessageFactory;
+import com.dream.dw.mq.message.MessageFactory;
 import com.dream.dw.mq.activemq.MessageProducer;
 import com.dream.dw.service.LoginService;
 import com.dream.dw.util.IdWorker;
