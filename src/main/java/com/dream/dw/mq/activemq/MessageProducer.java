@@ -30,4 +30,5 @@ public class MessageProducer {
         Destination destination = new ActiveMQQueue(message.getDestination());
         messageProducer.jmsTemplate.convertAndSend(destination, message);
     }
+
 }

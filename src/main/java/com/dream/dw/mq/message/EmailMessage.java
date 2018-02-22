@@ -9,10 +9,13 @@ import java.io.Serializable;
 public class EmailMessage extends MQMessage{
 
     String toEmailAddress;
+
     String userName;
+
     String activeUrl;
 
     public EmailMessage() {
         this.destination = MessageQueue.EMAIL_QUEUE;
     }
+
 }

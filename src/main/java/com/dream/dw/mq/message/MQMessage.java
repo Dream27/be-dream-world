@@ -6,5 +6,7 @@ import java.io.Serializable;
 
 @Data
 public abstract class MQMessage implements Serializable{
+
     String destination;
+
 }

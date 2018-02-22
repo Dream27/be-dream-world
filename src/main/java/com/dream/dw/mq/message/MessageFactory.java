@@ -7,7 +7,13 @@ public class MessageFactory {
         emailMessge.setToEmailAddress(toEmailAddress);
         emailMessge.setUserName(userName);
         emailMessge.setActiveUrl(activeUrl);
-
         return emailMessge;
     }
+
+    public static MQMessage getErrorMessage(MQMessage mqMessage) {
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setMqMessage(mqMessage);
+        return errorMessage;
+    }
+
 }
