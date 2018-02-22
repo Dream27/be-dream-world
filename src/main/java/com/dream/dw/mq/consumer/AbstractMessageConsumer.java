@@ -3,52 +3,94 @@ package com.dream.dw.mq.consumer;
 import com.dream.dw.mq.activemq.MessageProducer;
 import com.dream.dw.mq.message.MQMessage;
 import com.dream.dw.mq.message.MessageFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.jms.annotation.JmsListener;
+import org.apache.activemq.command.ActiveMQQueue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
-import javax.jms.Message;
-import javax.jms.MessageListener;
+import javax.jms.*;
 
-public abstract class AbstractMessageConsumer implements MessageListener{
+/**
+ * This abstract class is to be extended by any message consumer. Each consumer can only listen for a specific queue.
+ */
+public abstract class AbstractMessageConsumer {
 
+    private static final Logger logger = LoggerFactory.getLogger(AbstractMessageConsumer.class);
+
+    @Autowired
+    private ConnectionFactory connectionFactory;
+
+    /**
+     * Queue to listen for.
+     */
     public abstract String getQueue();
 
+    /**
+     * Processing retry count.
+     */
     public abstract int getRetryCount();
 
-    protected void init() {
-        // listener queue
-        String queue = getQueue();
-    }
-
-    @Override
-    public void onMessage(Message message) {
-        processRetry((MQMessage)message);
-    }
-
-//    @Bean
-//    public DefaultMessageListenerContainer listenerContainer(){
-//        DefaultMessageListenerContainer m =new DefaultMessageListenerContainer();
-//        m.setConnectionFactory(connectionFactory);
-//        Destination d = new ActiveMQQueue("*");//*表示通配所有队列名称
-//        m.setDestination(d);
-//        m.setMessageListener(new QueueMessageListener());
-//        return m;
-//    }
-
+    /**
+     * Process message logic.
+     * @param message Message from specified queue.
+     * @return true: Successfully processed.
+     *         false: Failed to process.
+     */
     public abstract boolean process(MQMessage message);
 
-    private void processRetry(MQMessage message) {
-        // retry
-        int times = getRetryCount();
-
-        while(!process(message) && times != 0) {
-            times--;
-        }
-
-        sendErrorQueue(message);
+    /**
+     * Setup message listener. This method must be called in subclass.
+     */
+    protected void setup() {
+        DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setDestination(new ActiveMQQueue(getQueue()));
+        MessageListener messageListener = this::processRetry;
+        container.setMessageListener(messageListener);
+        container.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);
+        container.initialize();
+        container.start();
     }
 
+    /**
+     * Process the message with given retry count.
+     */
+    private void processRetry(Message message) {
+        // Retrieve mqMessage from message
+        MQMessage mqMessage = null;
+        try {
+            mqMessage = (MQMessage)((ObjectMessage)message).getObject();
+        } catch (JMSException e) {
+            logger.error("Illegal message: {}", message);
+        }
+
+        // Process message
+        int retryCount = getRetryCount();
+        boolean result = false;
+        if (mqMessage != null) {
+            while (retryCount > 0) {
+                result = process(mqMessage);
+                if (result) {
+                    break;
+                }
+                retryCount--;
+            }
+
+            if (!result) {
+                sendErrorQueue(mqMessage);
+            }
+        }
+
+        // Acknowledge
+        try {
+            message.acknowledge();
+        } catch (JMSException e) {
+            logger.error("Failed to acknowledge message: {}, exception: {}", message, e);
+        }
+    }
+
+    // Send message to error queue if the message is failed to be processed.
     private void sendErrorQueue(MQMessage message) {
         MessageProducer.sendMessage(MessageFactory.getErrorMessage(message));
     }

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class EmailMessage extends MQMessage{
+public class EmailMessage extends MQMessage {
 
     String toEmailAddress;
 
