@@ -22,16 +22,16 @@ public class MessageConsumer {
      */
     @JmsListener(destination = MessageQueue.EMAIL_QUEUE)
     public void emailQueueListener(MQMessage message) {
-        retryProcess("email", message);
+        retryProcess(MessageQueue.EMAIL_QUEUE, message);
     }
 
-    private void retryProcess(String opt, MQMessage message) {
+    private void retryProcess(String queue, MQMessage message) {
         boolean result = false;
         int times = 5;
 
         //process
         while(!result && times != 0) {
-            if (opt.equals("email")) {
+            if (queue.equals(MessageQueue.EMAIL_QUEUE)) {
                 EmailMessage emailMessage = (EmailMessage) message;
                 Result result1 = EmailUtils.sendEmail(EmailFactory.newRegisterActiveEmail(emailMessage.getToEmailAddress(), emailMessage.getUserName(), emailMessage.getActiveUrl()));
                 result = result1.isSuccess();
