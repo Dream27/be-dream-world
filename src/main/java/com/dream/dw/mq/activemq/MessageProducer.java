@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.jms.Destination;
+import javax.jms.Message;
 
 @Service("producer")
 public class MessageProducer {
