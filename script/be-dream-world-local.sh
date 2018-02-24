@@ -12,7 +12,7 @@
 JAVA_HOME=/home/dream27/3rd/jdk1.8.0_162
 
 # service config
-SERVICE_DIR=/home/dream27/workspace/dream-world
+SERVICE_DIR=/home/dream27/workspace/dream-world/be-dream-world
 SERVICE_FULL_NAME=be-dream-world
 SERVICE_JAR_FILE=${SERVICE_DIR}/${SERVICE_FULL_NAME}.jar
 SERVICE_PID_FILE=${SERVICE_DIR}/${SERVICE_FULL_NAME}.pid
