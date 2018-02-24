@@ -1,3 +1,15 @@
+# Server settings
+server:
+  port: 2790
+  tomcat:
+    accesslog:
+      directory: /tmp/access-log/be-dream-world
+      enabled: true
+      pattern: common
+      buffered: false
+    min-spare-threads: 20
+    max-threads: 500
+
 # Spring profiles
 spring:
   # Data source

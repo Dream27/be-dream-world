@@ -1,3 +1,10 @@
+# Server settings
+server:
+  port: 2790
+  tomcat:
+    min-spare-threads: 20
+    max-threads: 500
+
 # Spring profiles
 spring:
   # Data source
