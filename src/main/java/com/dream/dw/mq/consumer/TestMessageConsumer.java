@@ -30,9 +30,9 @@ public class TestMessageConsumer extends AbstractMessageConsumer {
         setup();
 
         // Test sending message
-//        TestMessage testMessage = new TestMessage();
-//        testMessage.setTestMessage("This is a test message.");
-//        MessageProducer.sendMessage(testMessage);
+        TestMessage testMessage = new TestMessage();
+        testMessage.setTestMessage("This is a test message.");
+        MessageProducer.sendMessage(testMessage);
     }
 
     @Override
