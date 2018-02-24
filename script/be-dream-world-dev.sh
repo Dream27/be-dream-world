@@ -9,7 +9,7 @@
 #====================================================
 
 # jdk
-JAVA_HOME=/home/dream27/3rd/jdk-9.0.4
+JAVA_HOME=/home/dream27/3rd/jdk1.8.0_162
 
 # service config
 SERVICE_DIR=/home/dream27/workspace/dream-world
