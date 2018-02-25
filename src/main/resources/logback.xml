@@ -6,10 +6,10 @@
             <property name="LOG_HOME" value="/home/dream27/workspace/dream-world/be-dream-world/log"/>
         </then>
         <else>
-            <property name="LOG_HOME" value="/tmp/logs"/>
+            <property name="LOG_HOME" value="/tmp/dream-world/be-dream-world/logs"/>
         </else>
     </if>
-    <property name="PROJECT_NAME" value="/cws-app-acr"/>
+    <property name="PROJECT_NAME" value="/be-dream-world"/>
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -72,7 +72,8 @@
     <logger name="org.apache.zookeeper" level="error"/>
     <logger name="org.apache.http" level="warn"/>
     <logger name="org.mybatis.spring" level="error"/>
-    <logger name="org.apache.ibatis" level="debug"/>
+    <logger name="org.apache.ibatis" level="info"/>
+    <logger name="org.apache.activemq" level="info"/>
     <logger name="org.springframework" level="error"/>
     <logger name="com.alibaba.dubbo" level="info"/>
 
@@ -82,5 +83,5 @@
         <appender-ref ref="APP_FILE"/>
         <appender-ref ref="LOGGER_FILE"/>
     </root>
-    o
+
 </configuration>

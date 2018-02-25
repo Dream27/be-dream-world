@@ -137,6 +137,12 @@
             <artifactId>activemq-pool</artifactId>
         </dependency>
 
+        <!-- if condition support in logback xml -->
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>2.7.8</version>
+        </dependency>
     </dependencies>
 
     <build>
