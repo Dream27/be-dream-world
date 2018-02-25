@@ -3,7 +3,7 @@ server:
   port: 2790
   tomcat:
     accesslog:
-      directory: /home/dream27/workspace/dream-world/access-log/be-dream-world
+      directory: /home/dream27/workspace/dream-world/be-dream-world/access-log
       enabled: true
       pattern: common
       buffered: false
