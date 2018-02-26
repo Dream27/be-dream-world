@@ -79,4 +79,4 @@ redis:
 
 # Urls
 url:
-  activeUrl: http://localhost:8080/user/active?code=
+  activeUrl: http://localhost:2790/user/active?code=
