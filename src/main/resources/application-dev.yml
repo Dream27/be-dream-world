@@ -50,7 +50,7 @@ fdfs:
   so-timeout: 1500
   connect-timeout: 600
   tracker-list: sszhou.com:2701
-  fileurl: http://sszhou.com/
+  fileurl: http://sszhou.com:2780/
 
 # Sendcloud email
 email:
